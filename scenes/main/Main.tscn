@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dbke85t4pjdfq"]
+
+[ext_resource type="Script" uid="uid://c4slyw6bcit3s" path="res://scenes/main/main.gd" id="1_q24mn"]
+[ext_resource type="PackedScene" uid="uid://doadq67lr6ddr" path="res://entities/sonic/Sonic.tscn" id="2_gyg6b"]
+[ext_resource type="Texture2D" uid="uid://da8otcnvmt1i2" path="res://icon.svg" id="3_dc040"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0bbpv"]
+
+[node name="Main" type="Node2D" unique_id=867353524]
+script = ExtResource("1_q24mn")
+
+[node name="Sonic" parent="." unique_id=2071753985 instance=ExtResource("2_gyg6b")]
+position = Vector2(34, 141)
+
+[node name="TempGround" type="StaticBody2D" parent="." unique_id=11400269]
+position = Vector2(157, 151)
+scale = Vector2(29.95485, 0.9808918)
+
+[node name="Sprite2D" type="Sprite2D" parent="TempGround" unique_id=665869800]
+scale = Vector2(0.15608767, 0.1560122)
+texture = ExtResource("3_dc040")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TempGround" unique_id=718344135]
+shape = SubResource("RectangleShape2D_0bbpv")
