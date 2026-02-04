@@ -10,12 +10,11 @@
 [node name="Main" type="Node2D"]
 script = ExtResource("1_q24mn")
 
-[node name="Sonic" parent="." unique_id=2071753985 instance=ExtResource("2_gyg6b")]
-position = Vector2(161, 127)
+[node name="Sonic" parent="." instance=ExtResource("2_gyg6b")]
+position = Vector2(34, 141)
 
 [node name="TempGround" type="StaticBody2D" parent="."]
 position = Vector2(157, 151)
-rotation = 0.76887316
 scale = Vector2(29.95485, 0.9808918)
 
 [node name="Sprite2D" type="Sprite2D" parent="TempGround"]
@@ -26,4 +25,3 @@ texture = ExtResource("3_dc040")
 shape = SubResource("RectangleShape2D_0bbpv")
 
 [node name="Spike" parent="." instance=ExtResource("4_gyg6b")]
-position = Vector2(159, 141)
