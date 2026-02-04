@@ -15,7 +15,7 @@ position = Vector2(161, 127)
 
 [node name="TempGround" type="StaticBody2D" parent="." unique_id=433151298]
 position = Vector2(157, 151)
-rotation = 0.53551656
+rotation = -0.5810794
 scale = Vector2(29.95485, 0.9808918)
 
 [node name="Sprite2D" type="Sprite2D" parent="TempGround" unique_id=556580067]
