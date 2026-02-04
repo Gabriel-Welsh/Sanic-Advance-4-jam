@@ -10,7 +10,7 @@
 script = ExtResource("1_q24mn")
 
 [node name="Sonic" parent="." unique_id=2071753985 instance=ExtResource("2_gyg6b")]
-position = Vector2(34, 141)
+position = Vector2(157, 141)
 
 [node name="TempGround" type="StaticBody2D" parent="." unique_id=11400269]
 position = Vector2(157, 151)
