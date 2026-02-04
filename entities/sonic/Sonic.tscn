@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://doadq67lr6ddr"]
+
+[ext_resource type="Texture2D" uid="uid://b1ae2rh8bjm8h" path="res://entities/sonic/sonic idle.png" id="1_4efa1"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_336em"]
+radius = 12.0
+height = 36.0
+
+[node name="Sonic" type="CharacterBody2D" unique_id=2071753985]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=37035669]
+position = Vector2(0, -20)
+texture = ExtResource("1_4efa1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=527871537]
+position = Vector2(0, -18)
+rotation = 3.1415927
+shape = SubResource("CapsuleShape2D_336em")

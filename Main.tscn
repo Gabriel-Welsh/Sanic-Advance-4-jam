@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dbke85t4pjdfq"]
+
+[ext_resource type="PackedScene" uid="uid://doadq67lr6ddr" path="res://entities/sonic/Sonic.tscn" id="1_glv2v"]
+
+[node name="Main" type="Node2D" unique_id=867353524]
+
+[node name="Sonic" parent="." unique_id=2071753985 instance=ExtResource("1_glv2v")]
+position = Vector2(39, 65)
