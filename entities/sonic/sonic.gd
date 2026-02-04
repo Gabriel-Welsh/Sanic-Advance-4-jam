@@ -1,8 +1,10 @@
 extends CharacterBody2D
 class_name Sonic
 
+@onready var visuals := $Visuals
+
 @export var TOP_SPEED := 200.0
-@export var ACCEL := 200.0
+@export var ACCEL := 400.0
 @export var INITIAL_JUMP_VELOCITY := -225.0
 @export var HELD_JUMP_VELOCITY := -200.0
 @export var FRICTION := 1000
@@ -20,7 +22,7 @@ func _physics_process(delta: float) -> void:
 
 	var direction := Input.get_axis("left", "right")
 	if direction != 0:
-		if direction != velocity.normalized().x && velocity.x != 0:
+		if sign(direction) != sign(velocity.x) && velocity.x != 0:
 			velocity.x = move_toward(
 				velocity.x,
 				direction * TOP_SPEED,
@@ -38,6 +40,14 @@ func _physics_process(delta: float) -> void:
 			0,
 			FRICTION * delta
 		)
-	print(velocity)
-
+	if is_on_floor():
+		visuals.rotation = get_ground_angle()
+	else:
+		visuals.adrotation = 0
+	
 	move_and_slide()
+
+func get_ground_angle() -> float:
+	var normal := get_floor_normal()
+	var tangent := Vector2(normal.y, -normal.x)
+	return tangent.angle()
