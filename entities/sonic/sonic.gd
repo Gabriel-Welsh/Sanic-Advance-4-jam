@@ -8,6 +8,7 @@ class_name Sonic
 @export var INITIAL_JUMP_VELOCITY := -225.0
 @export var HELD_JUMP_VELOCITY := -200.0
 @export var FRICTION := 1000
+@export var ROTATION_SPEED := 5
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -18,36 +19,52 @@ func _physics_process(delta: float) -> void:
 	
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = INITIAL_JUMP_VELOCITY
+		var normal := get_floor_normal()
+		print("normal: ", normal)
+		var tangent := Vector2(normal.x, -normal.y)
+		print("tangent: ", tangent)
+		print("velocity old: ", velocity)
+		velocity += tangent*INITIAL_JUMP_VELOCITY
+		print("velocity new: ", velocity)
 
 	var direction := Input.get_axis("left", "right")
 	if direction != 0:
+		# if trying to move in the opposite direction of current velocity
 		if sign(direction) != sign(velocity.x) && velocity.x != 0:
 			velocity.x = move_toward(
 				velocity.x,
 				direction * TOP_SPEED,
 				ACCEL * delta + FRICTION*delta
 			)
+		# if trying to move in the same direction of current velocity
 		else:
 			velocity.x = move_toward(
 				velocity.x,
 				direction * TOP_SPEED,
 				ACCEL * delta
 			)
+	# if not tyring to move
 	else:
 		velocity.x = move_toward(
 			velocity.x,
 			0,
 			FRICTION * delta
 		)
+	#
 	if is_on_floor():
-		visuals.rotation = get_ground_angle()-PI
+		visuals.rotation = move_toward(visuals.rotation,
+			get_ground_angle(),
+			ROTATION_SPEED * 5 * delta)
 	else:
-		visuals.rotation = 0
+		visuals.rotation = move_toward(visuals.rotation,
+			0,
+			ROTATION_SPEED * delta)
+		print("velocity new new: ", velocity)
 	
 	move_and_slide()
 
+## returns the angle (in radians) tangent to the ground
 func get_ground_angle() -> float:
 	var normal := get_floor_normal()
-	var tangent := Vector2(normal.y, -normal.x)
+	var tangent := Vector2(-normal.y, normal.x)
 	return tangent.angle()
