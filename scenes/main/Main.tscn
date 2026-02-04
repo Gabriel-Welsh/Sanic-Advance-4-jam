@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dbke85t4pjdfq"]
+[gd_scene format=3 uid="uid://dbke85t4pjdfq"]
 
 [ext_resource type="Script" uid="uid://c4slyw6bcit3s" path="res://scenes/main/main.gd" id="1_q24mn"]
 [ext_resource type="PackedScene" uid="uid://doadq67lr6ddr" path="res://entities/sonic/Sonic.tscn" id="2_gyg6b"]
@@ -7,23 +7,23 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0bbpv"]
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" unique_id=737392064]
 script = ExtResource("1_q24mn")
 
 [node name="Sonic" parent="." unique_id=2071753985 instance=ExtResource("2_gyg6b")]
 position = Vector2(161, 127)
 
-[node name="TempGround" type="StaticBody2D" parent="."]
+[node name="TempGround" type="StaticBody2D" parent="." unique_id=433151298]
 position = Vector2(157, 151)
 rotation = 0.76887316
 scale = Vector2(29.95485, 0.9808918)
 
-[node name="Sprite2D" type="Sprite2D" parent="TempGround"]
+[node name="Sprite2D" type="Sprite2D" parent="TempGround" unique_id=556580067]
 scale = Vector2(0.15608767, 0.1560122)
 texture = ExtResource("3_dc040")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TempGround"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TempGround" unique_id=536517330]
 shape = SubResource("RectangleShape2D_0bbpv")
 
-[node name="Spike" parent="." instance=ExtResource("4_gyg6b")]
-position = Vector2(159, 141)
+[node name="Spike" parent="." unique_id=1673469331 instance=ExtResource("4_gyg6b")]
+position = Vector2(247, 123)

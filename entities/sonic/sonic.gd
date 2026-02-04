@@ -41,9 +41,9 @@ func _physics_process(delta: float) -> void:
 			FRICTION * delta
 		)
 	if is_on_floor():
-		visuals.rotation = get_ground_angle()
+		visuals.rotation = get_ground_angle()-PI
 	else:
-		visuals.adrotation = 0
+		visuals.rotation = 0
 	
 	move_and_slide()
 
