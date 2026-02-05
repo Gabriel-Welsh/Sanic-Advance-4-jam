@@ -2,6 +2,7 @@ extends CharacterBody2D
 class_name Sonic
 
 @onready var visuals := $Visuals
+@onready var cbox: CollisionShape2D = $CollisionBox
 
 @export var TOP_SPEED := 300.0
 @export var ACCEL := 200.0
@@ -14,63 +15,59 @@ class_name Sonic
 var sonic_is_on_floor: bool = true
 
 func _physics_process(delta: float) -> void:
-	sonic_is_on_floor = is_on_floor()
-	
-	handle_sonic_jump(delta)
-	
-	handle_sonic_left_right_movement(delta)
-	
-	handle_sonic_rotation_to_ground(delta)
-	
 	move_and_slide()
 	
+	sonic_is_on_floor = is_on_floor()
+	
+	handle_sonic_left_right_movement(delta)
+	print("velocity before: ", velocity)
+	handle_sonic_vertical(delta)
+	print("velocity after: ", velocity)
+	
+	handle_sonic_visual_rotation_to_ground(delta)
+	
 
-## Handles jump logic
-func handle_sonic_jump(delta: float):
+## Handles jump and fall logic
+func handle_sonic_vertical(delta: float):
 	# Handle jump.
-	if not sonic_is_on_floor:
+	if sonic_is_on_floor:
+		if Input.is_action_just_pressed("jump"):
+			var normal := get_floor_normal()
+			velocity += normal * INITIAL_JUMP_VELOCITY
+	else:
 		velocity += get_gravity() * delta
 		if Input.is_action_pressed("jump"):
 			velocity.y -= HELD_JUMP_VELOCITY * delta
-	if Input.is_action_just_pressed("jump") and sonic_is_on_floor:
-		var normal := get_floor_normal()
-		velocity += normal * INITIAL_JUMP_VELOCITY
 
-## Handles left and right movement inputs (very messy lol)
+## Handles left and right movement inputs
 func handle_sonic_left_right_movement(delta: float) -> void:
 	# Find sonic's state
 	var direction: float = Input.get_axis("left", "right")
 	var friction: float = FRICTION if sonic_is_on_floor else AIR_FRICTION
-	print("sonic is on floor: ", sonic_is_on_floor)
-	print("applied friction: ", friction)
 	var target := direction * TOP_SPEED
-	var accel := ACCEL
+	var accel := ACCEL if direction != 0 else friction
 	
-	if direction == 0:
-		accel = friction
-	else:
-		if sign(direction) != sign(velocity.x):
-			accel += friction
+	if sign(direction) != sign(velocity.x):
+		accel += friction
 	
-	print("accel value: ", accel)
 	velocity.x = move_toward(
 		velocity.x,
 		target,
 		accel * delta
 	)
+	
 
-func handle_sonic_rotation_to_ground(delta: float) -> void:
+func handle_sonic_visual_rotation_to_ground(delta: float) -> void:
 	if sonic_is_on_floor:
 		visuals.rotation = move_toward(visuals.rotation,
-			get_ground_angle(),
+			get_ground_tangent().angle(),
 			ROTATION_SPEED * 2 * delta)
 	else:
 		visuals.rotation = move_toward(visuals.rotation,
 			0,
 			ROTATION_SPEED * delta)
 
-## returns the angle (in radians) tangent to the ground
-func get_ground_angle() -> float:
+## returns a Vector2 tangent to the ground
+func get_ground_tangent() -> Vector2:
 	var normal := get_floor_normal()
-	var tangent := Vector2(-normal.y, normal.x)
-	return tangent.angle()
+	return Vector2(-normal.y, normal.x)

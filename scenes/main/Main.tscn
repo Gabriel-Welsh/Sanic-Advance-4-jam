@@ -12,10 +12,14 @@ script = ExtResource("1_q24mn")
 
 [node name="Sonic" parent="." unique_id=2071753985 instance=ExtResource("2_gyg6b")]
 position = Vector2(161, 127)
+floor_constant_speed = true
+floor_snap_length = 4.0
+
+[node name="Camera2D" type="Camera2D" parent="Sonic" unique_id=1200966701]
 
 [node name="TempGround" type="StaticBody2D" parent="." unique_id=433151298]
 position = Vector2(158, 176)
-rotation = 0.45585403
+rotation = 0.45045683
 scale = Vector2(29.95485, 0.9808918)
 
 [node name="Sprite2D" type="Sprite2D" parent="TempGround" unique_id=556580067]
