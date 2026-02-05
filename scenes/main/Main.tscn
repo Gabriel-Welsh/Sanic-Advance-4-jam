@@ -16,6 +16,9 @@ floor_constant_speed = true
 floor_snap_length = 4.0
 
 [node name="Camera2D" type="Camera2D" parent="Sonic" unique_id=1200966701]
+process_callback = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 100.0
 
 [node name="TempGround" type="StaticBody2D" parent="." unique_id=433151298]
 position = Vector2(158, 176)

@@ -20,9 +20,8 @@ func _physics_process(delta: float) -> void:
 	sonic_is_on_floor = is_on_floor()
 	
 	handle_sonic_left_right_movement(delta)
-	print("velocity before: ", velocity)
+	
 	handle_sonic_vertical(delta)
-	print("velocity after: ", velocity)
 	
 	handle_sonic_visual_rotation_to_ground(delta)
 	
