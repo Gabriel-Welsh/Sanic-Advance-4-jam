@@ -16,15 +16,17 @@ var sonic_is_on_floor: bool = true
 func _physics_process(delta: float) -> void:
 	sonic_is_on_floor = is_on_floor()
 	
-	handle_sonic_movement_and_input(delta)
+	handle_sonic_jump(delta)
+	
+	handle_sonic_left_right_movement(delta)
 	
 	handle_sonic_rotation_to_ground(delta)
 	
 	move_and_slide()
 	
 
-## Handles all movement inputs (very messy lol)
-func handle_sonic_movement_and_input(delta: float) -> void:
+## Handles jump logic
+func handle_sonic_jump(delta: float):
 	# Handle jump.
 	if not sonic_is_on_floor:
 		velocity += get_gravity() * delta
@@ -33,55 +35,29 @@ func handle_sonic_movement_and_input(delta: float) -> void:
 	if Input.is_action_just_pressed("jump") and sonic_is_on_floor:
 		var normal := get_floor_normal()
 		velocity += normal * INITIAL_JUMP_VELOCITY
+
+## Handles left and right movement inputs (very messy lol)
+func handle_sonic_left_right_movement(delta: float) -> void:
+	# Find sonic's state
+	var direction: float = Input.get_axis("left", "right")
+	var friction: float = FRICTION if sonic_is_on_floor else AIR_FRICTION
+	print("sonic is on floor: ", sonic_is_on_floor)
+	print("applied friction: ", friction)
+	var target := direction * TOP_SPEED
+	var accel := ACCEL
 	
-	# Handle left and right move
-	var direction := Input.get_axis("left", "right")
-	if direction != 0:
-		if sonic_is_on_floor:
-			var normal := get_floor_normal()
-			var tangent := Vector2(-normal.y, normal.x)
-			# if trying to move in the opposite direction of current velocity
-			if sign(direction) != sign(velocity.x) && velocity.x != 0:
-				velocity.x = move_toward(
-					velocity.x,
-					direction * TOP_SPEED,
-					(ACCEL + FRICTION) * delta
-				)
-			# if trying to move in the same direction of current velocity
-			else:
-				velocity.x = move_toward(
-					velocity.x,
-					direction * TOP_SPEED,
-					ACCEL * delta
-				)
-		else:
-			if sign(direction) != sign(velocity.x) && velocity.x != 0:
-				velocity.x = move_toward(
-					velocity.x,
-					direction * TOP_SPEED,
-					(ACCEL + AIR_FRICTION) * delta
-				)
-			# if trying to move in the same direction of current velocity
-			else:
-				velocity.x = move_toward(
-					velocity.x,
-					direction * TOP_SPEED,
-					ACCEL * delta
-				)
-	# if not tyring to move
+	if direction == 0:
+		accel = friction
 	else:
-		if sonic_is_on_floor:
-			velocity.x = move_toward(
-				velocity.x,
-				0,
-				FRICTION * delta
-			)
-		else:
-			velocity.x = move_toward(
-				velocity.x,
-				0,
-				FRICTION/25 * delta
-			)
+		if sign(direction) != sign(velocity.x):
+			accel += friction
+	
+	print("accel value: ", accel)
+	velocity.x = move_toward(
+		velocity.x,
+		target,
+		accel * delta
+	)
 
 func handle_sonic_rotation_to_ground(delta: float) -> void:
 	if sonic_is_on_floor:
